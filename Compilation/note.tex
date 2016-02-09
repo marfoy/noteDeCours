@@ -1,0 +1,306 @@
+\documentclass[a4paper,10pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{listings} % http://ctan.org/pkg/listings
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+
+% Title Page
+\title{Compilation}
+\author{Martin Lempereur}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+
+
+
+  \chapter{Introduction}
+
+Le compilateur peut être vu comme une sorte de "traducteur".
+Il prend en entrée un programme source et le traduit en un autre programme dans un langage différent
+que l'on appelle programme cible, souvent le langage du programme cible est plus bas niveau que le langage source par exemple: langage machine, langage assembleur.
+
+
+Les étapes principales du compilateur:
+
+
+Programme source $=>$ [*[ analyseur lexical $=>$ analyseur syntaxique $=>$ analyseur sémantique ] $=>$ **[générateur de code intermédiare $=>$ optimisation du code $=>$ génération du code ]] $=>$ programme cible
+
+*représente la partie analyse du compilateur, celle que l'on verra durant le cours
+
+
+**représente la partie synthèse du compilateur, non vue au cours
+
+En parallèle avec ces étapes il y a deux étapes supplémentaire qui sont executée, celle de la gestion des erreurs et celle du gestionnaire de la table de symbole.
+
+\section{Illustration par un exemple}
+
+Soit l'instruction suivante,
+\begin{lstlisting}
+position := initial + rate * 60;
+
+ 
+\end{lstlisting}
+
+
+\subsection{Analyseur lexical}
+
+l'analyseur lexical reçoit en entrée un programme source vu comme une suite de symboles tapés au clavier.
+
+
+\subsubsection{But}
+\begin{itemize}
+ \item écarter les commentaires et caractères blancs
+ \item détécter les \textbf{lèxemes} formant le programme
+        
+\end{itemize}
+
+
+Ex:
+
+
+\begin{description}
+ \item[position :] lexème qui est un identificateur
+ \item[:= :] lexème qui est une affectation
+ \item[initial :] lexème qui est un identificateur
+ \item[+ :] lexème qui est un opérateur
+ \item[rate :] lexème qui est un identificateur
+ \item[* :] lexème qui est un opérateur
+ \item[60 :] lexème qui est une constante entière
+ \item[; :] lexème qui est un séparateur
+\end{description}                
+
+séquence en sortie de l'analyseur lexical :
+
+[position][:=][initial][+][rate][*][60][;]
+
+le compilateur peut voir la suite de symboles comment ceci : 
+
+ID := ID + ID * NBR
+\subsubsection{Cours}
+Outils théorique pour la gestion des lexèmes
+\begin{itemize}
+ \item Expression régulière (regex)
+ \item Automates fini
+\end{itemize}
+
+\subsubsection{En plus}
+  \begin{itemize}
+   \item Detection d'erreurs lexicales
+   \item Tout identificteur trouvé va être stocké dans \textbf{la table des symboles}
+  \end{itemize}
+  
+ \subsection{Analyseur Syntaxique}
+  \subsubsection{But}
+  Vérifier que le programme source respecte la \textbf{syntaxe} du langage de programmation utilisée
+  \begin{itemize}
+   \item En utilisant la liste de lexèmes générée par l'analyseur lexical
+   \item En produisant en sortie un \textbf{arbre de dérivation} (voir schéma cours page 2)
+  \end{itemize}
+  \subsubsection{Cours}
+  Outils théoriques
+  \begin{itemize}
+   \item Grammaires hors contact
+  \end{itemize}
+    \subsubsection{But}
+  \begin{itemize}
+   \item detection d'erreur syntaxique, ex: oubli d'un ;
+   \item ajout de certaines \textbf{caractéritiques} aux identificateurs stockés dans la table des symboles
+   ex : les 3 ID sont des identificateurs de \textbf{variables}
+  \end{itemize}
+  
+  \subsection{Analyseur sémantique}
+  \subsubsection{But}
+    \begin{itemize}
+     \item \underline{Contrôle de type:} donner un type à chaque variable et vérifier qu'il n'y ai pas d'erreur de type
+     \item transformer l'arbre de dérivation reçu de l'analyseur syntaxique en un arbre plus compact appelé \textbf{arbre abstrait}
+    \end{itemize}
+    
+    \subsection{Générateur de code intermédiaire}
+      \subsubsection{But}
+      Sur base de l'arbre abstrait traduction de chaque instruction du programme source en une série d'instruction simple (ici traduction en assembleur)
+      
+      \begin{lstlisting}
+      $ID_{1}$ := $ID_{2}$ + $ID_{3}$ * 60  
+      \end{lstlisting}
+      
+      traduit par:
+      
+      \begin{lstlisting}
+       TEMP1 = INT_REAL(60)
+       TEMP2 = $ID_{3}$ * TEMP1
+       TEMP3 = $ID_{2}$ + TEMP2
+       $ID_{1}$ = TEMP3
+       
+      \end{lstlisting}
+
+
+      \subsection{Optimisation du code intermédiaire}
+      \subsubsection{But}
+      Réecrire de façon optimisée la liste des instructions générées à l'étape précédente.
+      
+      Ex:
+      
+      Le code précédent devient :
+      
+      \begin{lstlisting}
+       TEMP1 = $ID_{3}$ * 60
+       $ID_{1}$ = $ID_{2}$ + TEMP1
+      \end{lstlisting}
+
+    \subsection{Génération du code final}
+    \subsubsection{But}
+    Générer le programme cible
+    
+    \underline{Ici en assembleur :}
+    
+    \begin{lstlisting}
+     MOVF $ID_3$, R2
+     MULF #60.0, R2
+     MOVF $ID_2$, R1
+     ADDF R2, R1
+     MOVF R1, $ID_1$
+    \end{lstlisting}
+    
+    R1, R2 deux registres et F pour flottant dans MULF, MOVF et ADDF
+    
+    \subsection{Gestionnaire des erreurs}
+    \begin{itemize}
+     \item Détecter les erreurs dans le programme
+     \item Annoncer clairement les erreurs
+     \item Poursuivre correctement la compilation après chaque erreurs détectées
+    \end{itemize}
+ \subsection{Gestionnaire de la table des symboles}
+    \begin{itemize}
+     \item On stocke dans une table tous les identificateurs détectés avec leurs caractéristiques
+     
+     ex: 
+     
+     position : identificateur de variable réelle
+     
+     \item Cette table est construite pendant l'analyse et elle est utilisée pendant la synthèse
+         
+    \end{itemize}
+    
+    \chapter{Analyse lexicale}
+    
+    programme source $=>$ [Analyseur lexical] $=>$ liste de lexèmes
+    
+    En parallèle a lieu des intéractions avec le gestion d'erreur et le gestionnaire de la table de symbole.
+    
+    \section{But}
+    \begin{itemize}
+     \item Lire un à un les symboles du programme source
+     \item Au fur a mesure de cette lecture, détecter les lexèmes
+     \item Ecarter les blancs et les commentaires
+     \item Detecter et gérer les erreures lexicales
+     \item Stocker dans la table des symboles tous les identificateurs du programme source
+    \end{itemize}
+    
+    \section{Exemple en JAVA}
+    
+      \underline{Types de lexèmes}
+      \begin{enumerate}
+       \item Blancs
+       \item Commentaires
+       \item Identificateurs
+       \item mots-clés
+       \item littéraux
+       \item séparateurs
+       \item Opérateurs
+      \end{enumerate}
+      
+      \subsection{Blancs}
+      On condidère comme blancs les espaces , tabulation $=>$ et retour à la ligne $/n$
+      
+      \subsection{Commentaires}
+      
+      //commentaire uniligne
+      
+      /* commentaire multi-lignes */
+      
+      \subsection{Identificateurs}
+      
+      Il faut une définition précise sur laquelle se basé, en Java cette définition est:
+      
+      ``An identifier is an unlimited-length sequence of Java letters and Java digits, the first of which must be a Java letter.''
+      
+      Lettre JAVA: a-z, A-Z,\textunderscore,\textdollar
+      
+      Chiffres JAVA: 0-9
+      
+      \subsection{Mots-clé}
+      
+      Il y en a 50 en JAVA.
+      
+      Ex: abstract,while,void,...
+      
+      \subsection{Littéraux}
+      \begin{itemize}
+       \item Entier
+       \item Reel
+       \item Booleens
+       \item caractères
+       \item Chaines de caractères
+       \item Null
+      \end{itemize}
+      
+      \subsubsection{Littéraux entier}
+      \underline{Base 10 :}
+      Definition précise :
+      
+      ``A décimal numéral is either 0 or one digit among 1-9 optionally followed by one or more digits''
+      
+      
+      \underline{Base 8 :}
+      
+      Longueur $>=$ 2
+      \newline $1^{er}$ digit 0 suivi par 0-7
+      
+      \underline{Base 16 :}
+      
+      Commence par 0x ou 0X suivi par un ou plusieurs digit parmi 0-9 ou A-F
+      
+      zéro en base 10: 0
+      
+      zéro en base 8: 00
+      
+      zéro en base 16: 0x0
+      
+      \subsection{Séparateurs}
+      
+      Un séparateur en Java est un des symboles suivant: \textbf{( ) { } [ ] ; , .}
+      
+      \subsection{Opérateurs}
+      
+      Le langage Java compte les opérateurs suivante dans ses symboles : $=$ $<$ \& ...
+      
+      \subsection{Lexèmes}
+      
+      \underline{Définition précise du type de lexèmes} via les \underline{expressions régulières}.
+      
+      
+      Mais d'abord un peu de vocabulaire:
+      
+      \begin{description}
+       \item[alphabet] ensemble fini de \underline{symboles}
+       \item[mots] suite finie, evnetuellement vide de symboles pris dans un alphabet
+       \item[mots vide] mot utilisant 0 symbole noté $\varepsilon$
+       \item[langage] ensemble de mots sur un alphabet donné
+      \end{description}
+
+      
+
+
+
+
+
+
+
+
+
+\end{document}          
