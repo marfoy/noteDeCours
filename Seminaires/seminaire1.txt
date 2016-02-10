@@ -1,0 +1,70 @@
+Mercredi 9/02/2	
+
+Organistaion du service informatique quand le formatage et la méthodologie ramènent logiquement l'utilisateur
+au centre des préoccupations(ITIL is behind) A.Amorison
+
+Prof. Inge. gestion
+
+ITIL : gestion et structure
+	Services IT
+	Framework
+Methodologe contraintes? devrait etre un espace de solution, de ressource pour résourdre de problème, pas une guidance
+
+Service(UMONS):
+	Administration avec plusieurs services (unité d'organisation)
+	Services délivré ex: accès au wifi, reseaux cablé, courier, etc..
+
+Le framwork ITIL est complexe
+
+Information Technology Infrastructure Library
+
+utilisé dans les télécom dans les années 80 mais seulment maitriser mtn
+
+ITIL utilisé au srvices du services qualité
+
+SOuvent reduit en entreprise au (helpdesk : system de ticket pour prevenir de mauvais fonctionnement)
+
+trois niveau de support dans le helpdesk, support basique jusque l'appel a un expert
+
+ITIL est une association de processus validés
+
+ITIL appartient au domain public jusqu'en 2013 ou l'etat chercher a vendre les droits
+
+parcontre les outils pour réaliser les taches d'ITIL sont créer par les fabricant connu
+
+Composent d'iTIL:
+	sevice décisionnel:
+		Genration de strategie, portefeuille de serices(services qui pourrait etre proposé et services supprimé), catalogue de services(services disponnible)
+		suppression de services mais on le garde en memoire car il pourrait etre utile plus tard
+pilier interne:
+	service opérationenl
+
+		monitoring operationel: surveillance des serveurs pour repérer les défaillances
+		monitoring change en fct de l'echelle
+
+les cases du tableaux d'ITIL permet de se poser des question sur la gestion de son services
+
+Application a besoin d'un maintient, on ne peux pas simplement l'installer et l'abandonner
+
+incident quelque chose qui fonctionnait mais ne fonctionne plus et donc bloque le travaille
+
+Le problème n'est pas forcément visible par l'utilisateur
+
+Si il y a un incident c'est le services desk qui resoud l'incident, services technique fait en sorte que le problème ne se reproduise plus
+
+Modification peuvent être facile techniquement mais peuvent avoir de répercution plus complexe a d'autre point par exemple au niveau statégie
+
+CMDB configuration management database: lier les configurations entre elles pour pouvoir en tirer des conclusion
+
+Helpdesk seule source d'information sur les avis et retour des utilisateurs
+
+Il y a des norme ISO appliqué à ITIL
+
+objectif gérer les demande et veiller a la pression a laquelle l'helpdesk et soumis
+
+ITIL : génération de formalisme de demande
+
+Services mis en place quand la doc est en place au préalable
+
+Une fois que un services va passer en prod, on fait un transfert de connaissance pour ne pas avoir de lacunes de connaissance sur un nouveau services
+ERALY LIFE : periode ou le support a une bonne connaisance sur un nouveau service
