@@ -1,0 +1,81 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\author{Gheysen Jérémy}
+\title{The Internet of Things: Opportunities \& Challenges}
+\begin{document}
+\maketitle
+\newpage
+\section{Introduction générale}
+Dr Ir Amel Achour et Dr Ir Jimy Nsenga
+Présentation du CETIC. Rôle = transfert de technologies. Projets de recherche appliqués. 
+Recherche fondamentale : imaginer scénarios (vision théorique des choses)
+Recherche appliquée : utilisation de ces solutions et application/adaptation de ces dernières. 
+Technology Readiness Level (TRL) -> echelle de maturité du projet. 
+Divisé en 3 départements dont 1 s'occupant de l'internet des objets.
+\section{Internet Of Things, intro}
+pre-internet : sms, mobile 
+internet of content : email
+internet of services : e-commerce
+internet of people : skype/fb/YT
+internet of things : connecter notre environnement à internet. Idée de communiquer avec les objets. 
+Bcp d'opportunités : Smart cities; eHealth, building automation, remote monitoring... Domaine en grande évolution. 
+Def : Communiquer avec les objets dans l'environnement, capable de l'interroger et de lui donner une commande à faire. 
+Besoin de créer interface de communications, il en existe pas mal en développement. 
+3 niveaux : home, local, public
+Ensuite réduire le coût de production de l'ajout de connectivité. Plus minimiser la consommation (pb de batteries). 
+Interopérabilité entre les différents objets, ils doivent se comprendre. 
+Sécurité : éviter les fuites de données.
+Traitement embarquer : ok de transmettre les infos, mais mieux est de faire une communication intelligente, juste donner les infos intéressantes. 
+Egalement problème de latence, info périmée... 
+Capacité importante aussi au niveau du cloud (les trier avant de les envoyer de nouveau important). Trop d'envoi de données. \\
+Solution, pousser l'intelligence au plus près de la récupération de données (de la source). On analyse le plus tôt possible, au niveau local. Mais le problème est qu'il faut implémenter algo de traitement et analyse directement dans l'objet(si données importantes crypter par ex). Les objets ont cependant une capacité, énergie, mémoire limitée, interface de communication limitée...
+==> Technologie très prometteuse. 
+\section{Travaux de Cetic à ce niveau}
+\subsection{Embedded processing}  
+3 projets principaux
+- Save : surveiller conso énergétique gaz et eau, puis envoyer des alertes en fct des pb
+- e-Patch : aider personnes âgées, ex si personne tombe, alerte sms
+- tri-care : monitoring de la manière de vie, détecte si pb (comportement personnes agées par ex)
+\subsubsection{Save}
+Prendre des mesures, image de la conso par ex puis traitement. Attention au timing si on prend trop fréquemment, batterie va mourir assez vite. 
+Algo OCR qui permet de faire différents calculs. 
+Une fois qu'on sait ce qu'on va faire, on sélectionne différentes composantes pour mettre en application le projet. 
+Pour vivre assez longtemps : Duty cycle (IDLE mode pdt un certain temps, puis réveil, prend photo, traite et envoie ; différents facteurs peuvent changer IDLE time, envoi une fois par jour par ex...).
+On remarque par ex ici que la transmission est l'activité la plus gourmande au niveau énergétique -> Améliorer transmission. 
+
+\subsubsection{e-Patch}
+Idée d'analyser via un accéléromètre, on analyse les pics et on en déduit une chute. Mais pb, peut y avoir des chutes "lentes",  affiner la détection.
+
+\subsubsection{Tri-care}
+Surveiller le comportement journalier. A l'aide de capteur on sait où la personne se déplace et en fonction de ça on peut déduire les activités. Travail avec une société d'alarmes pour les capteurs. 
+Idée de machine-learning : d'abord analyser les habitudes de vie de qqun. Pour ensuite pouvoir déduire des comportements inhabituels. 
+
+\subsection{Wireless communication}
+\textbf{Multi wireless gates interface} \\
+Etudier les problèmes de mobilités et trouver des solutions aux différents problèmes. On traite ici tout ce qui est transfert de domaines. 
+
+Segmentation et envoi des paquets dans un réseau IP. 
+Les réseaux de capteurs, historiquement, sont à part. 
+Mnt qu'ils sont plus intelligents, récupérer leurs informations et avoir un comportement dynamique (motivation de 6LBR).
+Border router contiki non reconfigurable.
+Avantage de 6LBR peut par exemple supporter un certain nombre de border router. Encapsulation ipv4 dans ipv6 et inversément. 
+On va utiliser la redondance par question de fiabilité. Plusieurs border router peuvent effectuer le travail l'un l'autre. Recalcul de la route à l'aide des protocoles de routage. 
+
+\textbf{Mobilité} \\
+Besoin de contrôler l'environnement. Il faut tenir compte des mouvements éventuels des capteurs, ils doivent pouvoir se reconnecter aux appareils présent. Doit exister des protocoles pour permettre la reconnexion d'un appareil dans un autre environnement. (terminal peut bouger d'un réseau à un autre sans perdre de connexion, doit se faire de manière plus ou moins automatique). 
+
+\textbf{LPWAN} \\
+LPWAN = type de télécom wireless  (Low power Wide Area Network)
+But de cette technologie est d'avoir une longue portée, dizaine de km, faible débit(pas nécessaire plus).
+Bonne couverture et bonne pénétration(traverser murs).
+Il existe différents standards (niveau de maturité différent) ayant des caractéristiques différentes (range, débit, spectre).
+Au CETIC, travail sur le standard LoRaWAN. 
+\section{Avis}
+Deuxième partie trop technique...
+\end{document}
